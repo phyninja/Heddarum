@@ -11,17 +11,17 @@ contract Escrow{
 	
 	//modifiers
 	modifier buyerArbiterOnly(){
-		require (msg.sender == buyer || msg.sender = arbiter);
+		require (msg.sender == buyer || msg.sender == arbiter);
 		_;
 	}
 
 	modifier sellerArbiterOnly(){
-		require (msg.sender == sender || msg.sender == arbiter);
+		require (msg.sender == seller || msg.sender == arbiter);
 		_;
 	}
 
 	modifier inState(State expectedState){
-		require(currentState == expectedState;
+		require(currentState == expectedState);
 		_;
 	}
 
@@ -36,7 +36,7 @@ contract Escrow{
 		currentState = State.AWAITING_DELIVERY;		
 	}
 
-	function confirmDelivery() sellerArbiterOnly inState(State.AWAITING_DELIVERY) {
+	function confirmDelivery() buyerArbiterOnly inState(State.AWAITING_DELIVERY) {
 		seller.send(this.balance);
 		currentState = State.COMPLETE;
 	}
